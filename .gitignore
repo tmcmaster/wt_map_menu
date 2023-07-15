@@ -25,3 +25,21 @@ doc/api/
 
 .flutter-plugins
 .flutter-plugins-dependencies
+
+# Dart project ignore files
+.dart_tools
+.idea
+hold
+junk
+secrets
+firebase_options.dart
+*.g.dart
+*.freezed.dart
+.DS_Store
+*.iml
+*.ipr
+*.iws
+pubspec.lock
+.packages
+build/
+coverage/
