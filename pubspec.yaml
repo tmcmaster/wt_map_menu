@@ -1,6 +1,6 @@
 name: wt_map_menu
 description: The wt_map_menu is for...
-version: 0.0.2
+version: 1.0.0+1
 publish_to: 'none' # To publish to pub.dev, remove this line
 homepage: https://github.com/tmcmaster/wt_map_menu
 
@@ -24,9 +24,16 @@ dependencies:
   csv: ^5.0.1
   flutter:
     sdk: flutter
+  flutter_riverpod: ^2.3.6
+  wt_firepod:
+    git:
+      url: https://github.com/tmcmaster/wt_firepod.git
   wt_logging:
     git:
       url: https://github.com/tmcmaster/wt_logging.git
+  wt_models:
+    git:
+      url: https://github.com/tmcmaster/wt_models.git
 
 dev_dependencies:
   build_runner:

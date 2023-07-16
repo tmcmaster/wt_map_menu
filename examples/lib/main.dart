@@ -1,26 +1,25 @@
-import 'package:wt_app_scaffold/app_scaffolds.dart';
-import 'package:wt_firepod/wt_firepod.dart';
-import 'package:wt_logging/wt_logging.dart';
-import 'package:wt_map_menu_examples/examples_app.dart';
-import 'package:wt_map_menu_examples/firebase_options.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:wt_map_menu_examples/landing_page.dart';
 
-void main() async {
-  runMyApp(
-    withFirebase(
-      appName: 'wt-app-scaffold',
-      firebaseOptions: DefaultFirebaseOptions.currentPlatform,
-      andAppScaffold(
-        appDetails: MainApp.details,
-        appDefinition: MainApp.definition,
-        loginSupport: const LoginSupport(
-          emailEnabled: true,
-          googleEnabled: true,
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ProviderScope(
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
         ),
-        setApplicationLogLevel: Level.warning,
+        home: const LandingPage(),
       ),
-    ),
-    includeObservers: [],
-    includeOverrides: [],
-    enableProviderMonitoring: false,
-  );
+    );
+  }
 }
