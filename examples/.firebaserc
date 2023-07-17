@@ -1,0 +1,13 @@
+{
+  "projects": {},
+  "targets": {
+    "wonky-tech-f49bd": {
+      "hosting": {
+        "wt-map-menu": [
+          "wt-map-menu"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

@@ -1,0 +1,14 @@
+{
+  "hosting": [
+    {
+      "target": "wt-map-menu",
+      "public": "public",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ]
+    }
+  ]
+}
+

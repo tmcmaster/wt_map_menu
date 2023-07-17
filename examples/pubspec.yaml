@@ -19,8 +19,13 @@ scripts:
     local_build: flutter build web --release --output ../docs --base-href="/docs/";
     local_serve: (cd ..; open --new http://localhost:8000/docs; python3 -m http.server 8000)
     local_view: open http://localhost:8000/docs;
-    build: flutter build web --release --output ../docs --base-href="/wt_map_menu/"
+    build: flutter build web --release --output ../docs --base-href="/wt_map_menu/" --tree-shake-icons
     view: open --new https://tmcmaster.github.io/wt_map_menu/
+    firebase:
+      build: flutter build web --release --output public
+      deploy: firebase deploy --only hosting:wt-map-menu
+      serve: (cd public; open http://localhost:8000/; python3 -m http.server 8000)
+      view: open --new https://wt-map-menu.web.app/
 
 dependencies:
   cupertino_icons: ^1.0.5
