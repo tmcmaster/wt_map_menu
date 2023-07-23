@@ -1,18 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:wt_logging/wt_logging.dart';
+import 'package:wt_map_menu/src/definition_data.dart';
 import 'package:wt_map_menu/src/map_menu_controller.dart';
 import 'package:wt_models/wt_models.dart';
 
 class MapMenu extends ConsumerStatefulWidget {
   final String title;
-  final AlwaysAliveProviderBase<JsonMap> mapProvider;
+  final AlwaysAliveProviderBase<DefinitionData>? mapProvider;
+  final MapMenuController? controller;
   final void Function(String? selected)? onSelection;
-
+  final bool canSelect;
+  final bool canUnselect;
+  final String? defaultSelection;
+  final Color background;
   const MapMenu({
     super.key,
     required this.title,
-    required this.mapProvider,
+    this.mapProvider,
+    this.controller,
     this.onSelection,
+    this.canSelect = true,
+    this.canUnselect = true,
+    this.defaultSelection,
+    this.background = Colors.transparent,
   });
 
   @override
@@ -20,13 +31,24 @@ class MapMenu extends ConsumerStatefulWidget {
 }
 
 class _MapMenuState extends ConsumerState<MapMenu> {
+  static final log = logger(MapMenu);
+
   late MapMenuController controller;
   @override
   void initState() {
-    controller = MapMenuController(
-      name: 'MapMenu',
-      mapProvider: widget.mapProvider,
-    );
+    log.d('Initialising: Controller(${widget.controller}), MapProvider(${widget.mapProvider})');
+    if (widget.controller != null) {
+      controller = widget.controller!;
+      log.d(ref.read(controller.selectionJsonMap));
+    } else if (widget.mapProvider != null) {
+      controller = MapMenuController(
+        name: 'MapMenu : ${widget.title}',
+        definitionDataProvider: widget.mapProvider!,
+      );
+    } else {
+      throw Exception('Either the controller or mapProvider is required.');
+    }
+
     super.initState();
   }
 
@@ -42,7 +64,7 @@ class _MapMenuState extends ConsumerState<MapMenu> {
     });
 
     return ColoredBox(
-      color: Colors.grey.shade200,
+      color: widget.background,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -77,6 +99,8 @@ class _MapMenuState extends ConsumerState<MapMenu> {
                     breadcrumb: entry.key,
                     title: entry.key,
                     value: entry.value,
+                    canSelect: widget.canSelect,
+                    canUnselect: widget.canUnselect,
                   ),
                 ),
               ],
@@ -123,12 +147,16 @@ class _SelectableItem extends ConsumerWidget {
   final String breadcrumb;
   final String title;
   final dynamic value;
+  final bool canSelect;
+  final bool canUnselect;
 
   const _SelectableItem({
     required this.controller,
     required this.breadcrumb,
     required this.title,
     required this.value,
+    this.canUnselect = true,
+    this.canSelect = true,
   });
 
   bool get isMenu => value is Map;
@@ -191,6 +219,21 @@ class _SelectableItem extends ConsumerWidget {
                 padding: const EdgeInsets.only(top: 6, bottom: 8, left: 10, right: 10),
                 child: isSelected
                     ? InkWell(
+                        onTap: canSelect
+                            ? () {
+                                if (isActiveSelection) {
+                                  if (canUnselect) {
+                                    ref
+                                        .read(controller.activeSelection.notifier)
+                                        .setSelection(null);
+                                  }
+                                } else {
+                                  ref
+                                      .read(controller.activeSelection.notifier)
+                                      .setSelection(breadcrumb);
+                                }
+                              }
+                            : null,
                         child: Text(
                           title,
                           style: const TextStyle(
@@ -198,13 +241,6 @@ class _SelectableItem extends ConsumerWidget {
                             decoration: TextDecoration.underline,
                           ),
                         ),
-                        onTap: () {
-                          if (isActiveSelection) {
-                            ref.read(controller.activeSelection.notifier).setSelection(null);
-                          } else {
-                            ref.read(controller.activeSelection.notifier).setSelection(breadcrumb);
-                          }
-                        },
                       )
                     : Text(title),
               ),
@@ -226,6 +262,7 @@ class _SelectableItem extends ConsumerWidget {
                       breadcrumb: breadcrumb.isEmpty ? entry.key : '$breadcrumb : ${entry.key}',
                       title: entry.key,
                       value: entry.value,
+                      canUnselect: canUnselect,
                     ),
                   )
                   .toList(),

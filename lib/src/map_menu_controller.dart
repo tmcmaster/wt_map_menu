@@ -1,42 +1,43 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:wt_map_menu/src/definition_data.dart';
 import 'package:wt_models/wt_models.dart';
 
 class MapMenuController {
-  late AutoDisposeProvider<JsonMap> jsonMap;
+  late Provider<JsonMap> jsonMap;
 
-  late AutoDisposeStateNotifierProvider<JsonMapStateNotifier, JsonMap> completeJsonMap;
+  late StateNotifierProvider<JsonMapStateNotifier, JsonMap> completeJsonMap;
 
-  late AutoDisposeStateNotifierProvider<BreadcrumbSetStateNotifier, Set<String>> selectionSet;
+  late StateNotifierProvider<BreadcrumbSetStateNotifier, Set<String>> selectionSet;
   late AutoDisposeProviderFamily<bool, String> isSelected;
-  late AutoDisposeProvider<JsonMap> selectionJsonMap;
+  late Provider<JsonMap> selectionJsonMap;
 
-  late AutoDisposeStateNotifierProvider<BreadcrumbSetStateNotifier, Set<String>> expandedSet;
+  late StateNotifierProvider<BreadcrumbSetStateNotifier, Set<String>> expandedSet;
   late AutoDisposeProviderFamily<bool, String> isExpanded;
 
-  late AutoDisposeStateNotifierProvider<ActiveSelectionStateNotifier, String?> activeSelection;
+  late StateNotifierProvider<ActiveSelectionStateNotifier, String?> activeSelection;
   late AutoDisposeProviderFamily<bool, String> isActiveSelection;
 
-  late AutoDisposeStateNotifierProvider<BooleanStateNotifier, bool> hideUnselected;
-  late AutoDisposeStateNotifierProvider<BooleanStateNotifier, bool> expandAll;
+  late StateNotifierProvider<BooleanStateNotifier, bool> hideUnselected;
+  late StateNotifierProvider<BooleanStateNotifier, bool> expandAll;
 
   MapMenuController({
     required String name,
-    required AlwaysAliveProviderBase<JsonMap> mapProvider,
+    required AlwaysAliveProviderBase<DefinitionData> definitionDataProvider,
   }) {
-    jsonMap = Provider.autoDispose(
+    jsonMap = Provider(
       name: 'DefinitionIndex($name).jsonMap',
       (ref) => ref.watch(hideUnselected) ? ref.watch(selectionJsonMap) : ref.watch(completeJsonMap),
     );
 
-    completeJsonMap = StateNotifierProvider.autoDispose<JsonMapStateNotifier, JsonMap>(
+    completeJsonMap = StateNotifierProvider<JsonMapStateNotifier, JsonMap>(
       name: 'DefinitionIndex($name).completeJsonMap',
       (ref) {
-        final map = ref.watch(mapProvider);
-        return JsonMapStateNotifier(map);
+        final definitionData = ref.watch(definitionDataProvider);
+        return JsonMapStateNotifier(definitionData.map);
       },
     );
 
-    selectionJsonMap = Provider.autoDispose<JsonMap>(
+    selectionJsonMap = Provider<JsonMap>(
       name: 'DefinitionIndex($name).selectionJsonMap',
       (ref) {
         final set = ref.watch(selectionSet);
@@ -60,7 +61,7 @@ class MapMenuController {
       },
     );
 
-    selectionSet = StateNotifierProvider.autoDispose<BreadcrumbSetStateNotifier, Set<String>>(
+    selectionSet = StateNotifierProvider<BreadcrumbSetStateNotifier, Set<String>>(
       name: 'DefinitionIndex($name).selectionSet',
       (ref) => BreadcrumbSetStateNotifier(),
     );
@@ -71,7 +72,7 @@ class MapMenuController {
       },
     );
 
-    expandedSet = StateNotifierProvider.autoDispose<BreadcrumbSetStateNotifier, Set<String>>(
+    expandedSet = StateNotifierProvider<BreadcrumbSetStateNotifier, Set<String>>(
       name: 'DefinitionIndex($name).expandedSet',
       (ref) => BreadcrumbSetStateNotifier(),
     );
@@ -82,7 +83,7 @@ class MapMenuController {
       },
     );
 
-    activeSelection = StateNotifierProvider.autoDispose<ActiveSelectionStateNotifier, String?>(
+    activeSelection = StateNotifierProvider<ActiveSelectionStateNotifier, String?>(
       name: 'DefinitionIndex($name).activeSelection',
       (ref) => ActiveSelectionStateNotifier(),
     );
@@ -93,11 +94,11 @@ class MapMenuController {
       },
     );
 
-    expandAll = StateNotifierProvider.autoDispose<BooleanStateNotifier, bool>(
+    expandAll = StateNotifierProvider<BooleanStateNotifier, bool>(
       name: 'DefinitionIndex($name).expandAll',
       (ref) => BooleanStateNotifier(),
     );
-    hideUnselected = StateNotifierProvider.autoDispose<BooleanStateNotifier, bool>(
+    hideUnselected = StateNotifierProvider<BooleanStateNotifier, bool>(
       name: 'DefinitionIndex($name).hideUnSelected',
       (ref) => BooleanStateNotifier(),
     );
