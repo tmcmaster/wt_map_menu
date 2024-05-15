@@ -5,7 +5,7 @@ publish_to: 'none' # To publish to pub.dev, remove this line
 homepage: https://github.com/tmcmaster/wt_map_menu
 
 environment:
-  sdk: '>=3.0.3 <4.0.0'
+  sdk: '>=3.0.0 <4.0.0'
 
 # Scripts to be run with rps
 scripts:
@@ -25,6 +25,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_riverpod: ^2.3.6
+  font_awesome_flutter: ^10.5.0
   wt_firepod:
     git:
       url: https://github.com/tmcmaster/wt_firepod.git

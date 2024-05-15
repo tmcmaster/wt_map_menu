@@ -23,7 +23,7 @@ class MapMenu extends ConsumerStatefulWidget {
     this.canSelect = true,
     this.canUnselect = true,
     this.defaultSelection,
-    this.background = Colors.transparent,
+    this.background = Colors.white,
   });
 
   @override
@@ -74,16 +74,18 @@ class _MapMenuState extends ConsumerState<MapMenu> {
               _HideUnselectedToggle(
                 controller: controller,
               ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 6.0,
-                  top: 1,
-                ),
-                child: Text(
-                  widget.title,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 6.0,
+                    top: 1,
+                  ),
+                  child: Text(
+                    widget.title,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
@@ -105,7 +107,7 @@ class _MapMenuState extends ConsumerState<MapMenu> {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

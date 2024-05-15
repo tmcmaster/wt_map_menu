@@ -11,6 +11,7 @@ class LandingPage extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: DevicePreview(
+          backgroundColor: Colors.white,
           builder: (context) => SafeArea(
             child: MapMenu(
               title: 'Select from an Index',

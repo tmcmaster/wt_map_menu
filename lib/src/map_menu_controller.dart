@@ -65,6 +65,7 @@ class MapMenuController {
       name: 'DefinitionIndex($name).selectionSet',
       (ref) => BreadcrumbSetStateNotifier(),
     );
+
     isSelected = Provider.family.autoDispose<bool, String>(
       name: 'DefinitionIndex($name).isSelected.family',
       (ref, breadcrumb) {
