@@ -3,6 +3,9 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  desktop_webview_auth
+  flutter_localization
+  webview_universal
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
